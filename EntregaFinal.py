@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Proyecto Final 
-Logica para Ciencias de la Computación
-Salome Viana y Juanita Gómez
-"""
+    Proyecto Final
+    Lógica para Ciencias de la Computación
+    Salomé Viana y Juanita Gómez
+    """
 
 
 # -----------------------------PRELIMINARES------------------------------
@@ -16,14 +16,14 @@ import matplotlib.patches as patches
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 LetrasProposicionales= ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9']
 niveles = []
-conectivos = ['O', 'Y', '>','<->'] 
+conectivos = ['O', 'Y', '>','<->']
 
 # -----------------------------CLASE ARBOL-------------------------------
 
 ## Clase
 
 class Tree(object):
-
+    
     def __init__(self, label, left, right):
         self.left = left
         self.right = right
@@ -54,9 +54,9 @@ def reglas():
     l="("
     for j in range(1, 37,4):
         lj = ("(("+str((A[j-1]))+'Y(-'+str((A[j]))+'Y(-'+str((A[j+1]))+'Y-'+str(A[j+2])+")))"
-            +"O(("+str((A[j]))+'Y(-'+str((A[j+1]))+'Y(-'+str((A[j+2]))+'Y-'+str(A[j-1])+")))"
-            +"O(("+str((A[j+1]))+'Y(-'+str((A[j+2]))+'Y(-'+str((A[j-1]))+'Y-'+str(A[j])+")))"
-            +"O("+str((A[j+2]))+'Y(-'+str((A[j-1]))+'Y(-'+str((A[j]))+'Y-'+str(A[j+1])+"))))))")
+              +"O(("+str((A[j]))+'Y(-'+str((A[j+1]))+'Y(-'+str((A[j+2]))+'Y-'+str(A[j-1])+")))"
+              +"O(("+str((A[j+1]))+'Y(-'+str((A[j+2]))+'Y(-'+str((A[j-1]))+'Y-'+str(A[j])+")))"
+              +"O("+str((A[j+2]))+'Y(-'+str((A[j-1]))+'Y(-'+str((A[j]))+'Y-'+str(A[j+1])+"))))))")
         reglas.append(lj)
     A = reglas[0]
     B = reglas[1]
@@ -69,7 +69,7 @@ def reglas():
     I = reglas[8]
     Regla='((((((('+A+'Y'+B+')Y'+C+')Y'+D+')Y'+E+')Y'+F+')Y'+G+')Y'+H+')Y'+I
 
-    return Regla
+return Regla
 Regla1= reglas()
 
 ## Regla 2
@@ -146,7 +146,6 @@ def reglaF(LetrasProposicionales):
     reglaF='('+ponerparentesis(L)+')'
     return(reglaF)
 
-
 def reglaG(LetrasProposicionales):
     lista=[i for i in range(24,28)]
     L=[]
@@ -186,19 +185,18 @@ I=reglaI(LetrasProposicionales)
 
 Regla2='((((((('+A+'Y'+B+')Y'+C+')Y'+D+')Y'+E+')Y'+F+')Y'+G+')Y'+H+')Y'+I
 
-## Regla 
+## Regla
 
 Regla = '('+Regla1+')Y('+Regla2+')'
 
 ## Regla con condiciones iniciales
 
 # r: E esta coloreado de naranja
-# m: C esta coloreado de azul
+# m: D esta coloreado de morado
 # x: F esta coloreado de verde
 # 8: I esta coloreado de azul
 
 ReglaI = 'mY(8Y(rY(xY('+Regla+'))))'
-
 
 # ----------------------- PASAR REGLAS A ARBOL----------------------------
 
@@ -207,28 +205,28 @@ ReglaI = 'mY(8Y(rY(xY('+Regla+'))))'
 def levelCount(formula):
     #Dada una formula, cuenta el numero de paréntesis en esta.
     #Input: Formula como string
-    #Output: Contador 
-        if(len(formula)>1):
-                contador = 0
-                for a in range(0,len(formula)):
-                        if(formula[a]=='('): contador += 1
-                        elif(formula[a]==')'): contador -= 1
-                        niveles.append(contador)
+    #Output: Contador
+    if(len(formula)>1):
+        contador = 0
+            for a in range(0,len(formula)):
+                if(formula[a]=='('): contador += 1
+                elif(formula[a]==')'): contador -= 1
+                niveles.append(contador)
                 for b in range(0, len(niveles)):
-                        if((niveles[b]==0) and (formula[b] in conectivos)):
-                                if((formula[b]=='-')):
-                                        if(not(formula[b+1]=='(')): continue
-                                        else:
-                                                niveles.clear()
-                                                return b
-                                else:
-                                        niveles.clear()
-                                        return b
-                for c in range(0, len(formula)):
-                        if(formula[c] in conectivos):
+                    if((niveles[b]==0) and (formula[b] in conectivos)):
+                        if((formula[b]=='-')):
+                            if(not(formula[b+1]=='(')): continue
+                            else:
                                 niveles.clear()
-                                return c
-        return 0
+                                    return b
+                                else:
+                                    niveles.clear()
+                                    return b
+            for c in range(0, len(formula)):
+                if(formula[c] in conectivos):
+                    niveles.clear()
+                    return c
+    return 0
 
 ## Polaco
 
@@ -240,25 +238,25 @@ def polaco(formula):
     elif(not(levelCount(formula))):
         derecha = ""
         for b in range(2, len(formula)-1):
-                derecha+=formula[b]
+            derecha+=formula[b]
         return formula[levelCount(formula)] + polaco(derecha)
     else:
-            izquierda = ""
+        izquierda = ""
             derecha = ""
             for a in range(0, levelCount(formula)):
                 izquierda+=formula[a]
-            for b in range(levelCount(formula)+1, len(formula)):
-                derecha+=formula[b]
+        for b in range(levelCount(formula)+1, len(formula)):
+            derecha+=formula[b]
             izquierda_nueva = izquierda
             derecha_nueva = derecha
             if(izquierda[0]=='(' and izquierda[len(izquierda)-1]==')'):
                 izquierda_nueva = ""
                 for a in range(1, len(izquierda)-1):
                     izquierda_nueva+=izquierda[a]
-            if(derecha[0]=='(' and derecha[len(derecha)-1]==')'):
-                derecha_nueva = ""
-                for b in range(1, len(derecha)-1):
-                    derecha_nueva+=derecha[b]
+if(derecha[0]=='(' and derecha[len(derecha)-1]==')'):
+    derecha_nueva = ""
+        for b in range(1, len(derecha)-1):
+            derecha_nueva+=derecha[b]
             return formula[levelCount(formula)] + polaco(izquierda_nueva) + polaco(derecha_nueva)
 
 ## Polaco Inverso
@@ -267,9 +265,9 @@ def polacoInverso(polaco, referencia):
     #Encuentra la forma en polaco inverso de una formula en polaco
     #Input:Formula en polaco, referencia
     #Output:Formula en polaco inverso.
-        if(referencia == (len(polaco)-1)): return polaco[referencia]
-        else:
-                return polacoInverso(polaco, referencia+1) + polaco[referencia]
+    if(referencia == (len(polaco)-1)): return polaco[referencia]
+    else:
+        return polacoInverso(polaco, referencia+1) + polaco[referencia]
 
 ## String de Polaco inverso to tree
 
@@ -325,7 +323,7 @@ def elim_doble_negacion(T):
 ## Tesitin
 
 def Tseitin(T, LetrasProposicionales):
-    #Dada una formula T, halla una formula T' igual de buena que T en forma normla conjuntiva
+    #Dada una formula T, halla una formula T' igual de buena que T en forma normal conjuntiva
     #Input: T formula como Tree
     #       LetrasProposicionales, lista de strings
     #Output: Formula como Tree en forma normal conjuntiva
@@ -406,19 +404,19 @@ def forma_clausal(formula):
                     lista2.append(caracter)
                     lista1 = lista1[1:]
             lista.append(lista2)
-
+            
             formula = formula[count+1:]
-            count = 0
+        count = 0
         else:
             count +=1
-    string = ""
+string = ""
     listaFinal = []
     for i in lista:
         for j in i:
             string += j
         listaFinal.append(string)
         string = ""
-    return listaFinal
+return listaFinal
 
 # --------------------------------DPLL------------------------------------
 
@@ -451,9 +449,9 @@ def clausulaVacia(lista):
 
 def unitPropagate(lista,interps):
     # Hace Unit Propagate a un conjunto de clausulas
-    #Input: lista, lista de strings
-    #       interps, diccionario vacio
-    #Output: lista, lista de strings
+    #Input: lista, lista de strings (formula en forma clausal)
+    #       interps, diccionario (interpretacion parcial)
+    #Output: lista, lista de strings (formula en forma clausal)
     #        interps, diccionario con interpretaciones parciales
     x = clausulaUnitaria(lista)
     while(x!= None and clausulaVacia(lista)!=True):
@@ -545,8 +543,8 @@ def DPLLResultado(lista):
 # ----------------------REPRESENTACIÓN GRÁFICA---------------------------
 
 def dicToString(interpretacion):
-    #Dadas una interpretaciones crea una lista cuyos elementos literales (sin perdida de generalidad si I(p)=0 mete en la lisa -p y si I(p)=1 mete en la lista p)
-    #Input: interpretacion, diccionario (intepretaciones que hacen satisfacible la formula)
+    #Dada una interpretacion crea una lista cuyos elementos son literales tales que, sin perdida de generalidad, si I(p)=0 agrega a la lisa -p y si I(p)=1 agrega a la lista p
+    #Input: interpretacion, diccionario (intepretaciones que hacen verdadera.0 la formula)
     #Output: formula, lista de strings (litelares)
     formula=[]
     for i in LetrasProposicionales:
@@ -567,11 +565,11 @@ def dibujar_mapa(f):
     fig, axes = plt.subplots()
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
-
+    
     # Dibuja el tablero
     step = 1./3
     tangulos = []
-
+    
     for l in f:
         if '-' not in l:
             l=int(l)
@@ -581,25 +579,25 @@ def dibujar_mapa(f):
             x = (casilla-1)%3
             yinvert = (int((casilla-1) / 3))
             y = 2-yinvert
-
+            
             # Colorea las casillas de acuerdo a las letras proposicionales
             if (int(l)%4 == 1):
                 tangulos.append(patches.Rectangle((x*step, y*step), step, step,\
-                                                    facecolor='mediumpurple'))
+                                                  facecolor='mediumpurple'))
             if (int(l)%4 == 2):
                 tangulos.append(patches.Rectangle((x*step, y*step), step, step,\
-                                                    facecolor='darkorange'))
+                                                  facecolor='darkorange'))
             if (int(l)%4 == 3):
                 tangulos.append(patches.Rectangle((x*step, y*step), step, step,\
-                                                    facecolor='dodgerblue'))
+                                                  facecolor='dodgerblue'))
             if (int(l)%4 == 0):
                 tangulos.append(patches.Rectangle((x*step, y*step), step, step,\
-                                                    facecolor='limegreen'))
+                                                  facecolor='limegreen'))
 
 
-    # Calcula las coordenadas del centro de cada casilla
+# Calcula las coordenadas del centro de cada casilla
 
-    direcciones = {}
+direcciones = {}
     direcciones[1] = [0.165, 0.835]
     direcciones[2] = [0.5, 0.835]
     direcciones[3] = [0.835, 0.835]
@@ -609,25 +607,25 @@ def dibujar_mapa(f):
     direcciones[7] = [0.165, 0.165]
     direcciones[8] = [0.5, 0.165]
     direcciones[9] = [0.835, 0.165]
-
+    
     # Ubica los números de las casillas
-
+    
     i=1;
     while i<10:
-
+        
         string = ['A', 'B', 'C', 'D' ,'E', 'F' , 'G', 'H', 'I']
         plt.text(direcciones[i][0], direcciones[i][1],string[i-1], fontsize=15,
                  horizontalalignment='center',
-             verticalalignment='center')
+                 verticalalignment='center')
         i=i+1
-
-
+    
+    
     # Crea el mapa con las coloraciones y los numeros de las casillas
-
+    
     for t in tangulos:
         axes.add_patch(t)
-    # plt.show()
-    fig.savefig("solucion_" + str(1) + ".png")
+# plt.show()
+fig.savefig("solucion_" + str(1) + ".png")
 
 def let2num(lista):
     lista1=[]
@@ -652,7 +650,7 @@ def let2num(lista):
 def Solucion(Regla):
     #Contiene las funciones necesarias para toda la solucion del problema
     #Input:Regla
-    #Output:Interpretacion 
+    #Output:Interpretacion
     Tree = Reglas2Tree(Regla)
     Equi = Tseitin(Tree, LetrasProposicionales)
     FC = forma_clausal(Equi)
